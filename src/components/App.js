@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AppRouter from 'components/Router';
+import { AppRouter } from 'components';
 import { onAuthStateChanged } from 'fbase';
 
 function App() {
