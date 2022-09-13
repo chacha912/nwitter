@@ -25,11 +25,11 @@ initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
 export const authService = getAuth();
-export const createUser = (email, password) => {
-  createUserWithEmailAndPassword(authService, email, password);
+export const createUser = async (email, password) => {
+  await createUserWithEmailAndPassword(authService, email, password);
 };
-export const signInUser = (email, password) => {
-  signInWithEmailAndPassword(authService, email, password);
+export const signInUser = async (email, password) => {
+  await signInWithEmailAndPassword(authService, email, password);
 };
 export const onAuthStateChanged = (fn) => {
   FonAuthStateChanged(authService, fn);

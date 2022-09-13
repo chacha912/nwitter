@@ -5,6 +5,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [newAccount, setNewAccount] = useState(true);
+  const [error, setError] = useState('');
 
   const onChange = (event) => {
     const {
@@ -30,7 +31,7 @@ const Auth = () => {
         data = await signInUser(email, password);
       }
     } catch (error) {
-      console.log(error);
+      setError(error.message);
     }
   };
 
@@ -40,10 +41,11 @@ const Auth = () => {
         <input name='email' type='email' placeholder='Email' value={email} onChange={onChange} required />
         <input name='password' type='password' placeholder='Password' value={password} onChange={onChange} required />
         <button type='submit'>{newAccount ? 'Create Account' : 'Log In'}</button>
+        <div>{error}</div>
       </form>
       <div>
         <button type='button'>Continue with Google</button>
-        <button type='button'>Continue with Github</button>SD
+        <button type='button'>Continue with Github</button>
       </div>
     </div>
   );
