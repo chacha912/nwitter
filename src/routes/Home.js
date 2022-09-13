@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { dbService, collection, addDoc, getDocs } from 'fbase';
+import { dbService, collection, addDoc, onSnapshot, query } from 'fbase';
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState('');
@@ -27,16 +27,14 @@ const Home = ({ userObj }) => {
     setNweet(value);
   };
 
-  const getNweets = async () => {
-    const querySnapshot = await getDocs(collection(dbService, 'nweets'));
-    querySnapshot.forEach((doc) => {
-      const nweetObject = { ...doc.data(), id: doc.id };
-      setNweets((prev) => [nweetObject, ...prev]);
-    });
-  };
-
   useEffect(() => {
-    getNweets();
+    onSnapshot(collection(dbService, 'nweets'), (querySnapshot) => {
+      const nweetArray = [];
+      querySnapshot.forEach((doc) => {
+        nweetArray.unshift({ ...doc.data(), id: doc.id });
+      });
+      setNweets(nweetArray);
+    });
   }, []);
 
   return (

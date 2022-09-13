@@ -39,4 +39,4 @@ export { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebas
 
 // Initialize Cloud Firestore and get a reference to the service
 export const dbService = getFirestore(app);
-export { collection, addDoc, getDocs } from 'firebase/firestore';
+export { collection, addDoc, onSnapshot, query } from 'firebase/firestore';
