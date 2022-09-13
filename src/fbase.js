@@ -1,11 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
 import {
+  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged as FonAuthStateChanged,
 } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,7 +22,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
 export const authService = getAuth();
@@ -35,3 +36,7 @@ export const onAuthStateChanged = (fn) => {
   FonAuthStateChanged(authService, fn);
 };
 export { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+
+// Initialize Cloud Firestore and get a reference to the service
+export const dbService = getFirestore(app);
+export { collection, addDoc, getDocs } from 'firebase/firestore';
