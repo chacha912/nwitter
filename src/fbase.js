@@ -34,3 +34,4 @@ export const signInUser = async (email, password) => {
 export const onAuthStateChanged = (fn) => {
   FonAuthStateChanged(authService, fn);
 };
+export { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
