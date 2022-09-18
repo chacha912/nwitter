@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { dbService, collection, addDoc, onSnapshot } from 'fbase';
 import { Nweet } from 'components';
 
@@ -6,6 +6,7 @@ const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState('');
   const [nweets, setNweets] = useState([]);
   const [attachment, setAttachment] = useState('');
+  const inputFileRef = useRef();
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -44,6 +45,11 @@ const Home = ({ userObj }) => {
     reader.readAsDataURL(theFile);
   };
 
+  const onClearAttachment = () => {
+    inputFileRef.current.value = '';
+    setAttachment('');
+  };
+
   useEffect(() => {
     onSnapshot(collection(dbService, 'nweets'), (querySnapshot) => {
       const nweetArray = [];
@@ -58,9 +64,16 @@ const Home = ({ userObj }) => {
     <>
       <form onSubmit={onSubmit}>
         <input value={nweet} onChange={onChange} type='text' placeholder="What's on your mind?" maxLength={120} />
-        <input type='file' accept='image/*' onChange={onFileChange} />
+        <input ref={inputFileRef} type='file' accept='image/*' onChange={onFileChange} />
         <button type='submit'>Nweet</button>
-        {attachment && <img src={attachment} width='100px' alt='preview' />}
+        {attachment && (
+          <div>
+            <img src={attachment} width='100px' alt='preview' />
+            <button type='button' onClick={onClearAttachment}>
+              Clear
+            </button>
+          </div>
+        )}
       </form>
       <div>
         {nweets.map((nweet) => (
