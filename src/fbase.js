@@ -44,4 +44,4 @@ export { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc } from
 
 // Initialize Cloud Storage and get a reference to the service
 export const storageService = getStorage(app);
-export { ref, uploadString, getDownloadURL } from 'firebase/storage';
+export { ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';

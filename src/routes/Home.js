@@ -13,9 +13,11 @@ const Home = ({ userObj }) => {
     event.preventDefault();
 
     try {
+      let attachmentId = '';
       let attachmentUrl = '';
       if (attachment !== '') {
-        const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
+        attachmentId = uuidv4();
+        const attachmentRef = ref(storageService, `${userObj.uid}/${attachmentId}`);
         await uploadString(attachmentRef, attachment, 'data_url');
         attachmentUrl = await getDownloadURL(attachmentRef);
       }
@@ -24,6 +26,7 @@ const Home = ({ userObj }) => {
         text: nweet,
         createdAt: Date.now(),
         creatorId: userObj.uid,
+        attachmentId,
         attachmentUrl,
       });
 
