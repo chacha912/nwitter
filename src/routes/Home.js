@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { dbService, collection, addDoc, onSnapshot } from 'fbase';
+import { dbService, collection, addDoc, onSnapshot, storageService, ref, uploadString, getDownloadURL } from 'fbase';
 import { Nweet } from 'components';
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState('');
@@ -10,16 +11,32 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+
     try {
+      let attachmentUrl = '';
+      if (attachment !== '') {
+        const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
+        await uploadString(attachmentRef, attachment, 'data_url');
+        attachmentUrl = await getDownloadURL(attachmentRef);
+      }
+
       await addDoc(collection(dbService, 'nweets'), {
         text: nweet,
         createdAt: Date.now(),
         creatorId: userObj.uid,
+        attachmentUrl,
       });
+
       setNweet('');
+      clearAttachment();
     } catch (e) {
       console.error('Error adding document: ', e);
     }
+  };
+
+  const clearAttachment = () => {
+    inputFileRef.current.value = '';
+    setAttachment('');
   };
 
   const onChange = (event) => {
@@ -45,11 +62,6 @@ const Home = ({ userObj }) => {
     reader.readAsDataURL(theFile);
   };
 
-  const onClearAttachment = () => {
-    inputFileRef.current.value = '';
-    setAttachment('');
-  };
-
   useEffect(() => {
     onSnapshot(collection(dbService, 'nweets'), (querySnapshot) => {
       const nweetArray = [];
@@ -69,7 +81,7 @@ const Home = ({ userObj }) => {
         {attachment && (
           <div>
             <img src={attachment} width='100px' alt='preview' />
-            <button type='button' onClick={onClearAttachment}>
+            <button type='button' onClick={clearAttachment}>
               Clear
             </button>
           </div>

@@ -7,6 +7,7 @@ import {
   onAuthStateChanged as FonAuthStateChanged,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -40,3 +41,7 @@ export { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebas
 // Initialize Cloud Firestore and get a reference to the service
 export const dbService = getFirestore(app);
 export { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+
+// Initialize Cloud Storage and get a reference to the service
+export const storageService = getStorage(app);
+export { ref, uploadString, getDownloadURL } from 'firebase/storage';
